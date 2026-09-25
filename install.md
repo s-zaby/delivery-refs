@@ -88,16 +88,16 @@ python up_sync.py
    crontab -e
    ```
 
-2. Додайте рядок (вкажіть абсолютний шлях до вашого проєкту замість `~/delivery`):
+2. Додайте рядок (вкажіть абсолютний шлях до вашого проєкту замість `~/delivery-refs`, наприклад `/home/s/delivery-refs`):
 
    **Тільки Нова Пошта:**
    ```cron
-   0 0 * * * cd ~/delivery && ~/delivery/.venv/bin/python np_sync.py >> ~/delivery/data/np-sync.log 2>&1
+   0 0 * * * cd /home/s/delivery-refs && /home/s/delivery-refs/.venv/bin/python np_sync.py >> /home/s/delivery-refs/data/np-sync.log 2>&1
    ```
 
    **Послідовний запуск Нової Пошти та Укрпошти:**
    ```cron
-   0 0 * * * cd ~/delivery && ~/delivery/.venv/bin/python np_sync.py >> ~/delivery/data/sync.log 2>&1 && ~/delivery/.venv/bin/python up_sync.py >> ~/delivery/data/sync.log 2>&1
+   0 0 * * * cd /home/s/delivery-refs && /home/s/delivery-refs/.venv/bin/python np_sync.py >> /home/s/delivery-refs/data/sync.log 2>&1 && /home/s/delivery-refs/.venv/bin/python up_sync.py >> /home/s/delivery-refs/data/sync.log 2>&1
    ```
 
 > [!TIP]
