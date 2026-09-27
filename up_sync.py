@@ -92,10 +92,46 @@ class UkrPoshtaClient:
             region_id = region.get("REGION_ID") or region.get("region_id")
             if not region_id:
                 continue
-            region_districts = self._entries(self._call(
-                "get_districts_by_region_id", {"region_id": region_id}
+
+            # Query cities directly by region_id (avoids relying on get_districts_by_region_id)
+            region_cities = self._entries(self._call(
+                "get_city_by_region_id_and_district_id", {"region_id": region_id}
             ))
-            for district in region_districts or [{}]:
+            for city in region_cities:
+                city.setdefault("REGION_ID", region_id)
+                city_id = city.get("CITY_ID") or city.get("city_id")
+                if city_id:
+                    city.setdefault("Ref", city_id)
+                ref = _ref(city)
+                if ref not in seen["cities"]:
+                    seen["cities"].add(ref)
+                    cities.append(city)
+                if city_id:
+                    for office in self._entries(self._call(
+                        "get_postoffices_by_city_id", {"city_id": city_id}
+                    )):
+                        office.setdefault("CITY_ID", city_id)
+                        office.setdefault("REGION_ID", region_id)
+                        if city.get("DISTRICT_ID"):
+                            office.setdefault("DISTRICT_ID", city["DISTRICT_ID"])
+                        office_id = (office.get("POSTOFFICE_ID") or office.get("PO_ID")
+                                      or office.get("ID") or office.get("id"))
+                        if office_id:
+                            office.setdefault("Ref", office_id)
+                        ref = _ref(office)
+                        if ref not in seen["postoffices"]:
+                            seen["postoffices"].add(ref)
+                            postoffices.append(office)
+
+            # Try to fetch districts via API if supported, or fall back to empty
+            try:
+                region_districts = self._entries(self._call(
+                    "get_districts_by_region_id", {"region_id": region_id}
+                ))
+            except Exception:
+                region_districts = []
+
+            for district in region_districts:
                 district_id = district.get("DISTRICT_ID") or district.get("district_id")
                 if district:
                     district.setdefault("REGION_ID", region_id)
@@ -105,37 +141,54 @@ class UkrPoshtaClient:
                     if ref not in seen["districts"]:
                         seen["districts"].add(ref)
                         districts.append(district)
-                params = {"region_id": region_id}
-                if district_id:
-                    params["district_id"] = district_id
-                for city in self._entries(self._call(
-                    "get_city_by_region_id_and_district_id", params
-                )):
-                    city.setdefault("REGION_ID", region_id)
-                    if district_id:
-                        city.setdefault("DISTRICT_ID", district_id)
-                    city_id = city.get("CITY_ID") or city.get("city_id")
-                    if city_id:
-                        city.setdefault("Ref", city_id)
-                    ref = _ref(city)
-                    if ref not in seen["cities"]:
-                        seen["cities"].add(ref)
-                        cities.append(city)
-                    if city_id:
-                        for office in self._entries(self._call(
-                            "get_postoffices_by_city_id", {"city_id": city_id}
-                        )):
-                            office.setdefault("CITY_ID", city_id)
-                            office_id = (office.get("POSTOFFICE_ID") or office.get("PO_ID")
-                                          or office.get("ID") or office.get("id"))
-                            if office_id:
-                                office.setdefault("Ref", office_id)
-                            ref = _ref(office)
-                            if ref not in seen["postoffices"]:
-                                seen["postoffices"].add(ref)
-                                postoffices.append(office)
+
+        # Fill districts from cities and postoffices data if API didn't return them
+        districts = fill_districts_from_data(districts, cities, postoffices)
+
         return {"regions": regions, "districts": districts,
                 "cities": cities, "postoffices": postoffices}
+
+
+def fill_districts_from_data(
+    districts: list[dict[str, Any]],
+    cities: list[dict[str, Any]],
+    postoffices: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Populate/supplement districts list using district attributes found in cities and postoffices."""
+    result: dict[str, dict[str, Any]] = {}
+    for d in districts:
+        ref = _ref(d)
+        result[ref] = d
+
+    for item in (*cities, *postoffices):
+        district_id = item.get("DISTRICT_ID") or item.get("district_id")
+        district_name = (
+            item.get("DISTRICT_UA") or item.get("district_ua")
+            or item.get("DISTRICT_NAME") or item.get("district_name")
+            or item.get("DISTRICT_RU") or item.get("district_ru")
+            or item.get("DISTRICT_EN") or item.get("district_en")
+        )
+        if not district_id and not district_name:
+            continue
+
+        ref = str(district_id) if district_id else f"{item.get('REGION_ID', '')}_{district_name}"
+        if ref not in result:
+            district_entry: dict[str, Any] = {
+                "Ref": ref,
+            }
+            if district_id:
+                district_entry["DISTRICT_ID"] = district_id
+            if item.get("REGION_ID"):
+                district_entry["REGION_ID"] = item["REGION_ID"]
+            if district_name:
+                district_entry["DISTRICT_UA"] = district_name
+            for key in ("DISTRICT_RU", "DISTRICT_EN", "DISTRICT_KOATUU", "DISTRICT_KATOTTG"):
+                val = item.get(key) or item.get(key.lower())
+                if val:
+                    district_entry[key] = val
+            result[ref] = district_entry
+
+    return list(result.values())
 
 
 def config_from_env(require_token: bool = True) -> dict[str, Any]:
