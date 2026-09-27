@@ -93,43 +93,18 @@ class UkrPoshtaClient:
             if not region_id:
                 continue
 
-            # Query cities directly by region_id (avoids relying on get_districts_by_region_id)
-            region_cities = self._entries(self._call(
-                "get_city_by_region_id_and_district_id", {"region_id": region_id}
-            ))
-            for city in region_cities:
-                city.setdefault("REGION_ID", region_id)
-                city_id = city.get("CITY_ID") or city.get("city_id")
-                if city_id:
-                    city.setdefault("Ref", city_id)
-                ref = _ref(city)
-                if ref not in seen["cities"]:
-                    seen["cities"].add(ref)
-                    cities.append(city)
-                if city_id:
-                    for office in self._entries(self._call(
-                        "get_postoffices_by_city_id", {"city_id": city_id}
-                    )):
-                        office.setdefault("CITY_ID", city_id)
-                        office.setdefault("REGION_ID", region_id)
-                        if city.get("DISTRICT_ID"):
-                            office.setdefault("DISTRICT_ID", city["DISTRICT_ID"])
-                        office_id = (office.get("POSTOFFICE_ID") or office.get("PO_ID")
-                                      or office.get("ID") or office.get("id"))
-                        if office_id:
-                            office.setdefault("Ref", office_id)
-                        ref = _ref(office)
-                        if ref not in seen["postoffices"]:
-                            seen["postoffices"].add(ref)
-                            postoffices.append(office)
-
-            # Try to fetch districts via API if supported, or fall back to empty
+            # In Ukrposhta Address Classifier, get_districts_by_region_id_and_district_ua is the working endpoint
             try:
                 region_districts = self._entries(self._call(
-                    "get_districts_by_region_id", {"region_id": region_id}
+                    "get_districts_by_region_id_and_district_ua", {"region_id": region_id}
                 ))
             except Exception:
-                region_districts = []
+                try:
+                    region_districts = self._entries(self._call(
+                        "get_districts_by_region_id", {"region_id": region_id}
+                    ))
+                except Exception:
+                    region_districts = []
 
             for district in region_districts:
                 district_id = district.get("DISTRICT_ID") or district.get("district_id")
@@ -142,11 +117,66 @@ class UkrPoshtaClient:
                         seen["districts"].add(ref)
                         districts.append(district)
 
-        # Fill districts from cities and postoffices data if API didn't return them
+            # Query cities for each district in this region (or region level fallback)
+            district_ids = [d.get("DISTRICT_ID") or d.get("district_id") for d in region_districts]
+            district_targets = [d_id for d_id in district_ids if d_id] or [None]
+
+            for d_id in district_targets:
+                params: dict[str, Any] = {"region_id": region_id}
+                if d_id:
+                    params["district_id"] = d_id
+
+                try:
+                    region_cities = self._entries(self._call(
+                        "get_city_by_region_id_and_district_id_and_city_ua", params
+                    ))
+                except Exception:
+                    try:
+                        region_cities = self._entries(self._call(
+                            "get_city_by_region_id_and_district_id", params
+                        ))
+                    except Exception:
+                        region_cities = []
+
+                for city in region_cities:
+                    city.setdefault("REGION_ID", region_id)
+                    if d_id:
+                        city.setdefault("DISTRICT_ID", d_id)
+                    city_id = city.get("CITY_ID") or city.get("city_id")
+                    if city_id:
+                        city.setdefault("Ref", city_id)
+                    ref = _ref(city)
+                    if ref not in seen["cities"]:
+                        seen["cities"].add(ref)
+                        cities.append(city)
+                    if city_id:
+                        try:
+                            city_offices = self._entries(self._call(
+                                "get_postoffices_by_city_id", {"city_id": city_id}
+                            ))
+                        except Exception:
+                            city_offices = []
+
+                        for office in city_offices:
+                            office.setdefault("CITY_ID", city_id)
+                            office.setdefault("REGION_ID", region_id)
+                            if city.get("DISTRICT_ID"):
+                                office.setdefault("DISTRICT_ID", city["DISTRICT_ID"])
+                            office_id = (office.get("POSTOFFICE_ID") or office.get("PO_ID")
+                                          or office.get("ID") or office.get("id"))
+                            if office_id:
+                                office.setdefault("Ref", office_id)
+                            ref = _ref(office)
+                            if ref not in seen["postoffices"]:
+                                seen["postoffices"].add(ref)
+                                postoffices.append(office)
+
+        # Supplement any missing districts from cities and postoffices
         districts = fill_districts_from_data(districts, cities, postoffices)
 
         return {"regions": regions, "districts": districts,
                 "cities": cities, "postoffices": postoffices}
+
 
 
 def fill_districts_from_data(
