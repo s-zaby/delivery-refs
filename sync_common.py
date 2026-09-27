@@ -38,7 +38,96 @@ class ReferenceStore:
                 PRIMARY KEY (resource, ref)
             )"""
         )
+        self.connection.execute(
+            """CREATE TABLE IF NOT EXISTS sync_state (
+                key TEXT PRIMARY KEY,
+                value TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )"""
+        )
         self.connection.commit()
+
+    def get_state(self, key: str, default: Any = None) -> Any:
+        cursor = self.connection.execute("SELECT value FROM sync_state WHERE key = ?", (key,))
+        row = cursor.fetchone()
+        if row is None:
+            return default
+        try:
+            return json.loads(row[0])
+        except (ValueError, TypeError):
+            return row[0]
+
+    def set_state(self, key: str, value: Any, updated_at: str | None = None) -> None:
+        import datetime
+        ts = updated_at or datetime.datetime.now(datetime.timezone.utc).isoformat()
+        val = json.dumps(value, ensure_ascii=False) if not isinstance(value, str) else value
+        self.connection.execute(
+            """INSERT INTO sync_state(key, value, updated_at) VALUES (?, ?, ?)
+               ON CONFLICT(key) DO UPDATE SET value=excluded.value, updated_at=excluded.updated_at""",
+            (key, val, ts),
+        )
+        self.connection.commit()
+
+    def clear_state(self, prefix: str = "") -> None:
+        if prefix:
+            self.connection.execute("DELETE FROM sync_state WHERE key LIKE ?", (f"{prefix}%",))
+        else:
+            self.connection.execute("DELETE FROM sync_state")
+        self.connection.commit()
+
+
+    def upsert_records(self, resource: str, records: Iterable[dict[str, Any]], changed_on: str) -> list[dict[str, Any]]:
+        """Insert or update records incrementally, returning only those that were added or modified."""
+        incoming = {_ref(record): record for record in records}
+        if not incoming:
+            return []
+        refs = list(incoming.keys())
+        # Query existing in batches to avoid SQLite variable limit
+        existing: dict[str, str] = {}
+        batch_size = 900
+        for i in range(0, len(refs), batch_size):
+            chunk = refs[i:i + batch_size]
+            placeholders = ",".join("?" for _ in chunk)
+            for ref, p_hash in self.connection.execute(
+                f"SELECT ref, payload_hash FROM references_data WHERE resource = ? AND ref IN ({placeholders})",
+                (resource, *chunk),
+            ):
+                existing[ref] = p_hash
+
+        changed: list[dict[str, Any]] = []
+        for ref, record in incoming.items():
+            payload = _stable_json(record)
+            digest = hashlib.sha256(payload.encode()).hexdigest()
+            if existing.get(ref) != digest:
+                changed.append(record)
+            self.connection.execute(
+                """INSERT INTO references_data(resource, ref, payload, payload_hash, updated_at)
+                   VALUES (?, ?, ?, ?, ?)
+                   ON CONFLICT(resource, ref) DO UPDATE SET payload=excluded.payload,
+                   payload_hash=excluded.payload_hash, updated_at=excluded.updated_at""",
+                (resource, ref, payload, digest, changed_on),
+            )
+        self.connection.commit()
+        return changed
+
+    def mark_deleted(self, resource: str, active_refs: Iterable[str]) -> list[dict[str, Any]]:
+        """Remove any records in resource not present in active_refs and return deleted markers."""
+        active_set = set(active_refs)
+        existing_refs = [
+            ref for (ref,) in self.connection.execute(
+                "SELECT ref FROM references_data WHERE resource = ?", (resource,)
+            )
+        ]
+        deleted_refs = set(existing_refs) - active_set
+        changed: list[dict[str, Any]] = []
+        for ref in deleted_refs:
+            self.connection.execute(
+                "DELETE FROM references_data WHERE resource = ? AND ref = ?", (resource, ref)
+            )
+            changed.append({"Ref": ref, "_deleted": True})
+        if deleted_refs:
+            self.connection.commit()
+        return changed
 
     def sync(self, resource: str, records: Iterable[dict[str, Any]], changed_on: str) -> list[dict[str, Any]]:
         incoming = {_ref(record): record for record in records}
