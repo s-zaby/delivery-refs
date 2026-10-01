@@ -1,0 +1,24 @@
+[
+  {
+    "Description": "Мала Мартинка (Закарпатська обл.)",
+    "DescriptionRu": "Малая Мартынка (Закарпатская обл.)",
+    "Ref": "57ea527c-d315-11ea-a970-b8830365ade4",
+    "Delivery1": "1",
+    "Delivery2": "0",
+    "Delivery3": "1",
+    "Delivery4": "0",
+    "Delivery5": "1",
+    "Delivery6": "0",
+    "Delivery7": "0",
+    "Area": "7150812e-9b87-11de-822f-000c2965ae0e",
+    "SettlementType": "563ced13-f210-11e3-8c4a-0050568002cf",
+    "IsBranch": "0",
+    "PreventEntryNewStreetsUser": "0",
+    "CityID": "6018",
+    "SettlementTypeDescriptionRu": "село",
+    "SettlementTypeDescription": "село",
+    "SpecialCashCheck": 1,
+    "AreaDescription": "Закарпатська",
+    "AreaDescriptionRu": "Закарпатская"
+  }
+]
