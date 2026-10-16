@@ -1,0 +1,24 @@
+[
+  {
+    "Description": "Хмільна (Макарівський р-н., Київська обл.)",
+    "DescriptionRu": "",
+    "Ref": "ed242d53-c8f1-11f1-9aae-b8830365bd14",
+    "Delivery1": "0",
+    "Delivery2": "0",
+    "Delivery3": "0",
+    "Delivery4": "0",
+    "Delivery5": "0",
+    "Delivery6": "0",
+    "Delivery7": "0",
+    "Area": "71508131-9b87-11de-822f-000c2965ae0e",
+    "SettlementType": "563ced13-f210-11e3-8c4a-0050568002cf",
+    "IsBranch": "0",
+    "PreventEntryNewStreetsUser": "0",
+    "CityID": "12892",
+    "SettlementTypeDescriptionRu": "село",
+    "SettlementTypeDescription": "село",
+    "SpecialCashCheck": 1,
+    "AreaDescription": "Київська",
+    "AreaDescriptionRu": "Киевская"
+  }
+]
