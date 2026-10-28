@@ -1,0 +1,24 @@
+[
+  {
+    "Description": "Буштино",
+    "DescriptionRu": "Буштыно",
+    "Ref": "d653ba22-1988-11e5-add9-005056887b8d",
+    "Delivery1": "1",
+    "Delivery2": "1",
+    "Delivery3": "1",
+    "Delivery4": "1",
+    "Delivery5": "1",
+    "Delivery6": "1",
+    "Delivery7": "0",
+    "Area": "7150812e-9b87-11de-822f-000c2965ae0e",
+    "SettlementType": "563ced12-f210-11e3-8c4a-0050568002cf",
+    "IsBranch": "0",
+    "PreventEntryNewStreetsUser": "0",
+    "CityID": "1031",
+    "SettlementTypeDescription": "селище",
+    "SettlementTypeDescriptionRu": "поселок",
+    "SpecialCashCheck": 1,
+    "AreaDescription": "Закарпатська",
+    "AreaDescriptionRu": "Закарпатская"
+  }
+]
