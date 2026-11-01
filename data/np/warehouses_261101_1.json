@@ -1,0 +1,203 @@
+[
+  {
+    "SiteKey": "109644",
+    "Description": "Пункт приймання-видачі №5 (до 30 кг): вул. Промислова, 14",
+    "DescriptionRu": "Пункт приема-выдачи №5 (до 30 кг): ул. Промышленная, 14",
+    "ShortAddress": "Золочів, вул. Промислова, 14",
+    "ShortAddressRu": "Золочев, ул. Промышленная, 14",
+    "Phone": "380800500609",
+    "TypeOfWarehouse": "841339c7-591a-42e2-8233-7a0a00f0ed6f",
+    "Ref": "c93cbe5a-c6e0-11f1-86f8-b8830365ade5",
+    "Number": "5",
+    "CityRef": "441f7f92-a440-11dd-bcd8-001d92f78697",
+    "CityDescription": "Золочів (Львівська обл.)",
+    "CityDescriptionRu": "Золочев (Львовская обл.)",
+    "SettlementRef": "e71813cc-4b33-11e4-ab6d-005056801329",
+    "SettlementDescription": "Золочів",
+    "SettlementAreaDescription": "Львівська",
+    "SettlementRegionsDescription": "Золочівський",
+    "SettlementTypeDescription": "місто",
+    "SettlementTypeDescriptionRu": "город",
+    "Longitude": "24.883925000000000",
+    "Latitude": "49.796124000000000",
+    "PostFinance": "0",
+    "BicycleParking": "0",
+    "PaymentAccess": "0",
+    "POSTerminal": "0",
+    "InternationalShipping": "0",
+    "SelfServiceWorkplacesCount": "0",
+    "TotalMaxWeightAllowed": "30",
+    "PlaceMaxWeightAllowed": "0",
+    "SendingLimitationsOnDimensions": {
+      "Width": 120,
+      "Height": 120,
+      "Length": 120
+    },
+    "ReceivingLimitationsOnDimensions": {
+      "Width": 120,
+      "Height": 120,
+      "Length": 120
+    },
+    "Reception": {
+      "Monday": "10:00-18:00",
+      "Tuesday": "10:00-18:00",
+      "Wednesday": "10:00-18:00",
+      "Thursday": "10:00-18:00",
+      "Friday": "10:00-18:00",
+      "Saturday": "10:00-18:00",
+      "Sunday": "10:00-18:00"
+    },
+    "Delivery": {
+      "Monday": "10:00-18:00",
+      "Tuesday": "10:00-18:00",
+      "Wednesday": "10:00-18:00",
+      "Thursday": "10:00-18:00",
+      "Friday": "10:00-18:00",
+      "Saturday": "10:00-18:00",
+      "Sunday": "10:00-18:00"
+    },
+    "Schedule": {
+      "Monday": "10:00-18:00",
+      "Tuesday": "10:00-18:00",
+      "Wednesday": "10:00-18:00",
+      "Thursday": "10:00-18:00",
+      "Friday": "10:00-18:00",
+      "Saturday": "10:00-18:00",
+      "Sunday": "10:00-18:00"
+    },
+    "DistrictCode": "Ск Зо5",
+    "WarehouseStatus": "Working",
+    "WarehouseStatusDate": "2026-10-30 00:00:00",
+    "WarehouseIllusha": "0",
+    "CategoryOfWarehouse": "Store",
+    "Direct": "",
+    "RegionCity": "ТЕРНОПІЛЬ",
+    "WarehouseForAgent": "1",
+    "GeneratorEnabled": "0",
+    "MaxDeclaredCost": "29000",
+    "WorkInMobileAwis": "0",
+    "DenyToSelect": "0",
+    "CanGetMoneyTransfer": "0",
+    "HasMirror": "0",
+    "HasFittingRoom": "0",
+    "OnlyReceivingParcel": "0",
+    "PostMachineType": "",
+    "PostalCodeUA": "80700",
+    "WarehouseIndex": "76/5",
+    "BeaconCode": "",
+    "Location": ""
+  },
+  {
+    "SiteKey": "104285",
+    "Description": "Поштомат \"Нова Пошта\" №64470: вул. Шкільна, 82-Б (Маг. \"ПРОДУКТИ\")",
+    "DescriptionRu": "Почтомат \"Новая Почта\" №64470: ул. Школьная, 82-Б (Маг. \"ПРОДУКТЫ\")",
+    "ShortAddress": "Оріхівка, вул. Шкільна, 82-Б (Маг. \"ПРОДУКТИ\")",
+    "ShortAddressRu": "Ореховка, ул. Школьная, 82-Б (Маг. \"ПРОДУКТЫ\")",
+    "Phone": "",
+    "TypeOfWarehouse": "f9316480-5f2d-425d-bc2c-ac7cd29decf0",
+    "Ref": "d12c9025-5368-11f1-98dc-8c8474c74af1",
+    "Number": "64470",
+    "CityRef": "b0e83232-bed3-11eb-80fb-b8830365bd04",
+    "CityDescription": "Оріхівка (Одеська обл.)",
+    "CityDescriptionRu": "Ореховка (Одесская обл.)",
+    "SettlementRef": "0dcfb1bd-4b3a-11e4-ab6d-005056801329",
+    "SettlementDescription": "Оріхівка",
+    "SettlementAreaDescription": "Одеська",
+    "SettlementRegionsDescription": "Болградський",
+    "SettlementTypeDescription": "село",
+    "SettlementTypeDescriptionRu": "село",
+    "Longitude": "28.905379000000000",
+    "Latitude": "45.805684000000000",
+    "PostFinance": "0",
+    "BicycleParking": "0",
+    "PaymentAccess": "1",
+    "POSTerminal": "0",
+    "InternationalShipping": "0",
+    "SelfServiceWorkplacesCount": "0",
+    "TotalMaxWeightAllowed": "20",
+    "PlaceMaxWeightAllowed": "0",
+    "SendingLimitationsOnDimensions": {
+      "Width": 40,
+      "Height": 30,
+      "Length": 60
+    },
+    "ReceivingLimitationsOnDimensions": {
+      "Width": 40,
+      "Height": 30,
+      "Length": 60
+    },
+    "Reception": {
+      "Monday": "-",
+      "Tuesday": "-",
+      "Wednesday": "-",
+      "Thursday": "-",
+      "Friday": "-",
+      "Saturday": "-",
+      "Sunday": "-"
+    },
+    "Delivery": {
+      "Monday": "-",
+      "Tuesday": "-",
+      "Wednesday": "-",
+      "Thursday": "-",
+      "Friday": "-",
+      "Saturday": "-",
+      "Sunday": "-"
+    },
+    "Schedule": {
+      "Monday": "00:01-23:59",
+      "Tuesday": "00:01-23:59",
+      "Wednesday": "00:01-23:59",
+      "Thursday": "00:01-23:59",
+      "Friday": "00:01-23:59",
+      "Saturday": "00:01-23:59",
+      "Sunday": "00:01-23:59"
+    },
+    "DistrictCode": "Болград",
+    "WarehouseStatus": "Working",
+    "WarehouseStatusDate": "2026-10-31 00:00:00",
+    "WarehouseIllusha": "0",
+    "CategoryOfWarehouse": "Postomat",
+    "Direct": "",
+    "RegionCity": "ОДЕСА ПОСИЛКОВИЙ",
+    "WarehouseForAgent": "1",
+    "GeneratorEnabled": "0",
+    "MaxDeclaredCost": "29000",
+    "WorkInMobileAwis": "0",
+    "DenyToSelect": "0",
+    "CanGetMoneyTransfer": "0",
+    "HasMirror": "0",
+    "HasFittingRoom": "0",
+    "OnlyReceivingParcel": "0",
+    "PostMachineType": "FullDayService",
+    "PostalCodeUA": "68721",
+    "WarehouseIndex": "53265/64470",
+    "BeaconCode": "",
+    "Location": "",
+    "PostomatFor": "Sender"
+  },
+  {
+    "Ref": "e18c0ff8-5b12-11f0-9ad7-d4f5ef0df2b8",
+    "_deleted": true
+  },
+  {
+    "Ref": "036682ac-1ed5-11f1-98dc-8c8474c74af1",
+    "_deleted": true
+  },
+  {
+    "Ref": "819eaf17-3cce-11f1-98dc-8c8474c74af1",
+    "_deleted": true
+  },
+  {
+    "Ref": "94a78048-5d92-11f0-9ad7-d4f5ef0df2b8",
+    "_deleted": true
+  },
+  {
+    "Ref": "8e6bb3ce-234a-11ef-98f8-d4f5ef0df2b9",
+    "_deleted": true
+  },
+  {
+    "Ref": "76be9ba2-0ee0-11f0-98f8-d4f5ef0df2b9",
+    "_deleted": true
+  }
+]
