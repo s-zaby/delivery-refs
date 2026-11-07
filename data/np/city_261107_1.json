@@ -1,0 +1,24 @@
+[
+  {
+    "Description": "Олександрівка (Кропивницький р-н. Кіров.обл)",
+    "DescriptionRu": "Александровка (Кропивницкий р-н. Киров.обл)",
+    "Ref": "f7062320-4078-11de-b509-001d92f78698",
+    "Delivery1": "1",
+    "Delivery2": "1",
+    "Delivery3": "0",
+    "Delivery4": "1",
+    "Delivery5": "1",
+    "Delivery6": "1",
+    "Delivery7": "0",
+    "Area": "71508132-9b87-11de-822f-000c2965ae0e",
+    "SettlementType": "563ced11-f210-11e3-8c4a-0050568002cf",
+    "IsBranch": "0",
+    "PreventEntryNewStreetsUser": "0",
+    "CityID": "434",
+    "SettlementTypeDescription": "селище міського типу",
+    "SettlementTypeDescriptionRu": "поселок городского типа",
+    "SpecialCashCheck": 1,
+    "AreaDescription": "Кіровоградська",
+    "AreaDescriptionRu": "Кировоградская"
+  }
+]
