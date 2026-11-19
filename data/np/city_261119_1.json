@@ -1,0 +1,24 @@
+[
+  {
+    "Description": "Надія (Полтавська обл.)",
+    "DescriptionRu": "Надия (Полтавская обл.)",
+    "Ref": "35008069-11e7-11ef-99eb-48df37b91f4a",
+    "Delivery1": "1",
+    "Delivery2": "1",
+    "Delivery3": "1",
+    "Delivery4": "1",
+    "Delivery5": "1",
+    "Delivery6": "1",
+    "Delivery7": "0",
+    "Area": "71508137-9b87-11de-822f-000c2965ae0e",
+    "SettlementType": "563ced13-f210-11e3-8c4a-0050568002cf",
+    "IsBranch": "0",
+    "PreventEntryNewStreetsUser": "0",
+    "CityID": "11693",
+    "SettlementTypeDescription": "село",
+    "SettlementTypeDescriptionRu": "село",
+    "SpecialCashCheck": 1,
+    "AreaDescription": "Полтавська",
+    "AreaDescriptionRu": "Полтавская"
+  }
+]
